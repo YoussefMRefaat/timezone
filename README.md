@@ -52,6 +52,8 @@ There are four types of roles in this application :-
 3- Reset password <br>
 4- Read watches
 
+## Entity relationship diagram
+![ERD](ERD.png)
 
 ## License
 
