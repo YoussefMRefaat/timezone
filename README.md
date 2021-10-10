@@ -20,7 +20,9 @@ There are four types of roles in this application :-
 - Guest
 
 
- Moderators' accounts are provided by the developer.
+ Moderators' accounts should be provided by the developer. <br>
+
+Run `php artisan db:seed` to seed a moderator with email= `moderator@test` and password=`123456` <br> <br>
 
 #### All authenticated accounts can :-
 1- Update their information and password <br>
@@ -44,7 +46,7 @@ There are four types of roles in this application :-
 4- Update the quantity of a watch in the cart  <br>
 5- Delete watches from the cart <br>
 6- Make an order <br>
-7- Show and track his orders <br>
+7- Show and track their orders <br>
 
 #### Guests can :-
 1- Signup <br>
