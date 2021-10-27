@@ -1,12 +1,8 @@
 # Timezone - Watch Shop
 
-## Introduction
-
-I built this project using ***Laravel*** to practice on what I had learned in backend development.
-
 ## Idea
 
-This API serves a web application of a watches shop called Timezone to help in selling the watches online.
+Backend RESTful API for selling watches online. It's designed to be owned by a store or a brand. Built in ***Laravel*** 
 
 
 ### Check [Reference Documentation](https://github.com/YoussefMRefaat/timezone/wiki) for details about endpoints
@@ -19,14 +15,9 @@ There are four types of roles in this application :-
 - User
 - Guest
 
-
- Moderators' accounts should be provided by the developer. <br>
-
-Run `php artisan db:seed` to seed a moderator with email= `moderator@test` and password=`123456` <br> <br>
-
 #### All authenticated accounts can :-
-1- Update their information and password <br>
-2- Verify their email <br>
+1- Update account information and password <br>
+2- Verify the email <br>
 3- Logout
 
 #### Moderators can :-
@@ -54,8 +45,16 @@ Run `php artisan db:seed` to seed a moderator with email= `moderator@test` and p
 3- Reset password <br>
 4- Read watches
 
+
+Moderators' accounts should be provided by the developer. <br>
+
+Run `php artisan db:seed` to seed a moderator with email= `moderator@test` and password=`123456` <br> <br>
+
 ## Entity relationship diagram
 ![ERD](ERD.png)
+
+## Packages
+[Laravel Sanctum](https://laravel.com/docs/8.x/sanctum) <br>
 
 ## License
 
