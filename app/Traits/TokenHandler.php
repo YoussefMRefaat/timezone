@@ -51,13 +51,14 @@ trait TokenHandler{
      *
      * @return string
      */
-    private function getToken(int $seconds, string $table, string $indexKey, mixed $indexValue): string
+    private function getToken(int $seconds, string $table, string $indexKey, mixed $indexValue , string $requestToken): string
     {
         $timeBeforeExpire = Carbon::now()->subSeconds($seconds);
-        if(! $token = DB::table($table)
+        $token = DB::table($table)
             ->where($indexKey , $indexValue)
             ->where('created_at' , '>' , $timeBeforeExpire)
-            ->latest()->first())
+            ->latest()->first();
+        if(!$token || !Hash::check($requestToken , $token))
             abort(401 , 'Invalid or expired token');
         return $token->token;
     }

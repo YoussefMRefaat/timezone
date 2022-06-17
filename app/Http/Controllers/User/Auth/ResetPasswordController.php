@@ -79,10 +79,7 @@ class ResetPasswordController extends Controller
      */
     public function reset(ResetPasswordRequest $request): \Illuminate\Http\JsonResponse
     {
-        $token = $this->getToken($this->seconds, $this->table, $this->indexKey, $request->input('email'));
-        if(!Hash::check($request->input('code') , $token)){
-            abort(401 , 'Invalid or expired token');
-        }
+        $token = $this->getToken($this->seconds, $this->table, $this->indexKey, $request->input('email') , $request->input('code'));
         $user = $this->handle($request->only('email' , 'password'));
         $user->tokens()->delete();
         $code = $user->createToken('authToken')->plainTextToken;
@@ -93,5 +90,4 @@ class ResetPasswordController extends Controller
             'Role' => $user->role,
         ], 200);
     }
-
 }

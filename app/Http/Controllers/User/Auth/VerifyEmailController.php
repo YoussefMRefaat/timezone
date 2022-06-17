@@ -67,14 +67,10 @@ class VerifyEmailController extends Controller
      */
     public function verify(VerificationCodeRequest $request): \Illuminate\Http\JsonResponse
     {
-        $token = $this->getToken($this->seconds, $this->table, $this->indexKey, auth()->id());
-        if(!Hash::check($request->input('code') , $token)){
-            abort(401 , 'Invalid or expired token');
-        }
+        $token = $this->getToken($this->seconds, $this->table, $this->indexKey, auth()->id() , $request->input('code'));
         auth()->user()->update([
             'email_verified_at' => Carbon::now(),
         ]);
-
         return response()->json([
             'Message' => 'The email has been verified successfully'
         ] , 200);
