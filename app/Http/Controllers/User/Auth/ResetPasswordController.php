@@ -45,18 +45,12 @@ class ResetPasswordController extends Controller
      */
     public function send(ForgotPasswordRequest $request): \Illuminate\Http\JsonResponse
     {
-        $token = $this->generateToken(12);
-
-        $validated = $request->validated();
-
-        $this->store($this->table, $token, $this->indexKey, $validated['email']);
-
+        $token = $this->storeToken($this->table, $this->indexKey, $request->input('email'));
         try {
-            Mail::to($validated['email'])->send(new VerifyEmail($token , $this->seconds));
+            Mail::to($request->input('email'))->send(new VerifyEmail($token , $this->seconds));
         } catch (\Exception){
             abort(502 , 'Failed to send the code');
         }
-
         return response()->json([
             'Message' => 'Token has been created and sent to the user\'s email. It will expire after: '. $this->seconds .  ' seconds',
         ], 201);
@@ -85,18 +79,13 @@ class ResetPasswordController extends Controller
      */
     public function reset(ResetPasswordRequest $request): \Illuminate\Http\JsonResponse
     {
-        $validated = $request->validated();
-
-        $token = $this->getToken($this->seconds, $this->table, $this->indexKey, $validated['email']);
-
-        if(!Hash::check($validated['code'] , $token)){
+        $token = $this->getToken($this->seconds, $this->table, $this->indexKey, $request->input('email'));
+        if(!Hash::check($request->input('code') , $token)){
             abort(401 , 'Invalid or expired token');
         }
-
-        $user = $this->handle($validated);
+        $user = $this->handle($request->only('email' , 'password'));
         $user->tokens()->delete();
         $code = $user->createToken('authToken')->plainTextToken;
-
         return response()->json([
             'Message' => 'Password has been updated successfully',
             'token' => $code,

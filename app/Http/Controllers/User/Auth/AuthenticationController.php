@@ -18,8 +18,7 @@ class AuthenticationController extends Controller
      */
     public function login(LoginRequest $request): \Illuminate\Http\JsonResponse
     {
-        $validated = $request->validated();
-        if(!Auth::attempt($validated)){
+        if(!auth()->attempt($request->only(['email' , 'password']))){
             abort(401 , 'Invalid email or password');
         }
         $token = $request->user()->createToken('authToken');

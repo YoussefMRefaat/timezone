@@ -20,12 +20,8 @@ class SignupController extends Controller
      */
     public function store(SignupRequest $request): \Illuminate\Http\JsonResponse
     {
-        $validated = $request->validated();
-
-        $user = $this->create($validated);
-
+        $user = $this->create($request->validated());
         $token = $user->createToken('authToken');
-
         return response()->json([
             'Message' => 'Registered successfully',
             'token' => $token->plainTextToken,
@@ -42,23 +38,12 @@ class SignupController extends Controller
      */
     private function create($validated): User
     {
-        $user = User::create([
-            'first_name' => $validated['first_name'],
-            'last_name' => $validated['last_name'],
-            'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
-            'gender' => $validated['gender'],
-            'primary_phone' => $validated['primary_phone'],
-            'sec_phone' => $validated['sec_phone'] ?? null,
-            'primary_address' => $validated['primary_address'],
-            'sec_address' => $validated['sec_address'] ?? null,
-            'role' => 'user',
-        ]);
-
+        $validated['role'] = 'user';
+        $validated['password'] = Hash::make($validated['password']);
+        $user = User::create($validated);
         Cart::create([
             'user_id' => $user->id,
         ]);
-
         return $user;
     }
 }

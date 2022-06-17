@@ -46,17 +46,12 @@ class VerifyEmailController extends Controller
     {
         if(auth()->user()->email_verified_at)
             abort (409 , 'Email is already verified');
-
-        $token = $this->generateToken(8);
-
-        $this->store($this->table ,$token , $this->indexKey , auth()->id());
-
+        $token = $this->storeToken($this->table , $this->indexKey , auth()->id());
         try {
             Mail::to(auth()->user())->send(new VerifyEmail($token , $this->seconds));
         } catch (\Exception){
             abort(502 , 'Failed to send the code');
         }
-
         return response()->json([
             'Message' => 'Token has been created and sent to the user\'s email.
             It will expire after: '. $this->seconds .  ' seconds',
@@ -72,11 +67,8 @@ class VerifyEmailController extends Controller
      */
     public function verify(VerificationCodeRequest $request): \Illuminate\Http\JsonResponse
     {
-        $validated = $request->validated();
-
         $token = $this->getToken($this->seconds, $this->table, $this->indexKey, auth()->id());
-
-        if(!Hash::check($validated['code'] , $token)){
+        if(!Hash::check($request->input('code') , $token)){
             abort(401 , 'Invalid or expired token');
         }
         auth()->user()->update([

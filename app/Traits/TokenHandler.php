@@ -24,19 +24,21 @@ trait TokenHandler{
      * Store a token in the DB
      *
      * @param string $table
-     * @param string $token
      * @param string $indexKey
      * @param mixed $indexValue
+     * @return string
      */
-    protected function store(string $table, string $token, string $indexKey , mixed $indexValue){
+    protected function storeToken(string $table, string $indexKey , mixed $indexValue): string
+    {
         DB::table($table)
             ->where($indexKey , $indexValue)->delete();
-
+        $token = $this->generateToken(12);
         DB::table($table)->insert([
             $indexKey => $indexValue,
             'token' => Hash::make($token),
             'created_at' => Carbon::now(),
         ]);
+        return $token;
     }
 
     /**
