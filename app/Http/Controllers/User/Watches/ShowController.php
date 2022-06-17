@@ -5,13 +5,11 @@ namespace App\Http\Controllers\User\Watches;
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\Watch;
-use App\Traits\WatchFinder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ShowController extends Controller
 {
-    use WatchFinder;
 
     /**
      * Get all watches ordered by date in descending order
@@ -89,7 +87,7 @@ class ShowController extends Controller
      */
     public function show(int $id): \Illuminate\Http\JsonResponse
     {
-        $watch = $this->findWatch($id);
+        $watch = Watch::findOrFail($id);
 
         return response()->json([
             'Message' => 'Watch has been retrieved successfully',

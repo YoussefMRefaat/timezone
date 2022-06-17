@@ -4,11 +4,9 @@ namespace App\Http\Controllers\Admin\Watches;
 
 use App\Http\Controllers\Controller;
 use App\Models\Watch;
-use App\Traits\WatchFinder;
 
 class ShowController extends Controller
 {
-    use WatchFinder;
 
     /**
      * Get all watches
@@ -33,7 +31,7 @@ class ShowController extends Controller
      */
     public function show(int $id): \Illuminate\Http\JsonResponse
     {
-        $watch = $this->findWatch($id);
+        $watch = Watch::findOrFail($id);
 
         return response()->json([
             'Message' => 'Watch has been retrieved successfully',

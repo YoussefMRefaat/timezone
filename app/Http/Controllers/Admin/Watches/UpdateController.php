@@ -5,13 +5,13 @@ namespace App\Http\Controllers\Admin\Watches;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Watches\UpdateImageRequest;
 use App\Http\Requests\Watches\UpdateRequest;
+use App\Models\Watch;
 use App\Traits\ImageStorer;
-use App\Traits\WatchFinder;
 use Illuminate\Support\Facades\File;
 
 class UpdateController extends Controller
 {
-    use WatchFinder, ImageStorer;
+    use ImageStorer;
 
     /**
      * Update a watch
@@ -22,7 +22,7 @@ class UpdateController extends Controller
      */
     public function update(int $id , UpdateRequest $request): \Illuminate\Http\JsonResponse
     {
-        $watch = $this->findWatch($id);
+        $watch = Watch::findOrFail($id);
 
         $validated = $request->validated();
 
@@ -49,7 +49,7 @@ class UpdateController extends Controller
     {
         $validated = $request->validated();
 
-        $watch = $this->findWatch($id);
+        $watch = Watch::findOrFail($id);
 
         $path = $this->storeImage($validated['image']);
 

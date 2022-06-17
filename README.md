@@ -17,8 +17,7 @@ There are four types of roles in this application :-
 
 #### All authenticated accounts can :-
 1- Update account information and password <br>
-2- Verify the email <br>
-3- Logout
+2- Logout
 
 #### Moderators can :-
 1- Create, read, and delete accounts of admins <br>

@@ -3,12 +3,11 @@
 namespace App\Http\Controllers\Admin\Watches;
 
 use App\Http\Controllers\Controller;
-use App\Traits\WatchFinder;
+use App\Models\Watch;
 use Illuminate\Support\Facades\File;
 
 class DeleteController extends Controller
 {
-    use WatchFinder;
 
     /**
      * Delete a watch
@@ -18,7 +17,7 @@ class DeleteController extends Controller
      */
     public function destroy(int $id): \Illuminate\Http\JsonResponse
     {
-        $watch = $this->findWatch($id);
+        $watch = Watch::findOrFail($id);
 
         File::delete($watch->img);
 
